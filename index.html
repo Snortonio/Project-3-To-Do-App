@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="stylesheet"href="stylesheet.css">
+        <script src="./main.js"></script>
+        <title>To-Do List</title>
+    </head>
+    <body>
+        <header>
+            <div id="container">
+                <h1>To-Do List</h1>
+                <form>
+                    <input type="text" id="task" placeholder="Add new task...">
+                    <input type="date" id="date"><br>
+                    <button type="button" id="addbutton">Add Task</button>
+                </form>
+            </div>
+        </header>
+        <main>
+            <h1>My Tasks</h1>
+            <div id="Editing">
+                <button type="button" id="edit">Edit</button>
+                <button type="button" id="delete">Delete</button>
+            </div>
+        </main>
+        <script>
+            const text1 = document.getElementById('task');
+            const date1 = document.getElementById('date');
+            const button1 = document.getElementById('addbutton');
+            const mytaskslist = document.getElementById('Editing');
+
+            button1.addEventListener('click', addtask)
+
+            function addtask(){ 
+                var para = document.createElement("p");
+                para.innerHTML = text1.value;
+                mytaskslist.appendChild(para);
+                text1.value = "";
+            }
+            
+        </script>
+    </body>
+</html>

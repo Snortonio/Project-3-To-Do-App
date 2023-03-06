@@ -1,0 +1,60 @@
+body {
+    font-family: sans-serif;
+    font-size:110%;
+    padding: 1rem;
+    background-color:rgb(61, 56, 56);
+}
+header{
+    text-align: center;
+    color: white;
+    background-color: rgb(103, 103, 114);
+    background-size: cover;
+    padding: 2rem;
+    margin-left: 20%;
+    margin-right: 20%;
+    height: 200px;
+    border-radius: 25px;
+    }
+main{
+    text-align: center;
+    color: white;
+    background-color: rgb(103, 103, 114);
+    padding: 1rem;
+    height: 600px;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 25px;
+    border-radius: 25px;
+}
+button{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px;
+}
+#task{
+    height: 40px;
+    width: 75%;
+    border-radius: 10px;
+    font-size: 16px;
+}
+#date{
+    height: 40px;
+    border-radius: 10px;
+}
+#delete{
+    background-color: red
+}
+p {
+    background-color: rgb(58, 57, 57);
+    border-radius: 10px;
+    height: 30px;
+}
+#addbutton{
+    margin top: 20px;
+}
