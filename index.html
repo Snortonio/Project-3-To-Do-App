@@ -3,43 +3,61 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <link rel="stylesheet"href="stylesheet.css">
+        <link rel="stylesheet" href="../Project-3-To-Do-App/stylesheet.css">
         <script src="./main.js"></script>
         <title>To-Do List</title>
     </head>
     <body>
-        <header>
-            <div id="container">
-                <h1>To-Do List</h1>
-                <form>
-                    <input type="text" id="task" placeholder="Add new task...">
-                    <input type="date" id="date"><br>
-                    <button type="button" id="addbutton">Add Task</button>
-                </form>
-            </div>
-        </header>
-        <main>
-            <h1>My Tasks</h1>
-            <div id="Editing">
-                <button type="button" id="edit">Edit</button>
-                <button type="button" id="delete">Delete</button>
-            </div>
-        </main>
+        <h1>To-Do List</h1>
+        <input type="text" id="itemInput" placeholder="Enter task">
+        <input type="date" id="dueDateInput">
+        <button onclick="addItem()">Add Item</button>
+        <ul id="itemList">
+        </ul>
         <script>
-            const text1 = document.getElementById('task');
-            const date1 = document.getElementById('date');
-            const button1 = document.getElementById('addbutton');
-            const mytaskslist = document.getElementById('Editing');
+            var input = document.getElementById("itemInput");
+            var dueDateInput = document.getElementById("dueDateInput");
+            var ul = document.getElementById("itemList");
+            var todolist = [];
 
-            button1.addEventListener('click', addtask)
+            function addItem() {
+                var item = input.value;
+                var dueDate = dueDateInput.value;
+                item.className = "item";
+                let editbn = document.createElement("button");
+                editbn.innerHTML = "Edit";
+                editbn.className = "editbn"
+                let savebn = document.createElement("Button");
+                savebn.innerHTML = "Save";
+                savebn.className = "savebn";
+                let deletebn = document.createElement("button");
+                deletebn.innerHTML = "Delete";
+                deletebn.className = "deletebn"
+                var li = document.createElement("li");
+                li.innerText = item + ":     Due Date:     "+ dueDate;
+                ul.appendChild(li);
+                ul.appendChild(editbn)
+                ul.appendChild(savebn)
+                ul.appendChild(deletebn)
+                
+                input.value = "";
+                dueDateInput.value = "";
 
-            function addtask(){ 
-                var para = document.createElement("p");
-                para.innerHTML = text1.value;
-                mytaskslist.appendChild(para);
-                text1.value = "";
-            }
-            
+                editbn.addEventListener("click", function() {
+                li.contentEditable = true;
+                });
+
+                savebn.addEventListener("click", function(){
+                    li.contentEditable = false;
+                })
+
+                deletebn.addEventListener("click", function(){
+                ul.removeChild(li);
+                ul.removeChild(editbn);
+                ul.removeChild(savebn);
+                ul.removeChild(deletebn)});
+                }
+
         </script>
     </body>
 </html>
