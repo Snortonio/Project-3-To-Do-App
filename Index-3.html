@@ -8,17 +8,19 @@
         <title>To-Do List</title>
     </head>
     <body>
-        <h1>To Do List</h1>
-        <input type="text" id="todoInput">
-        <input type="date" id="dateInput">
-        <button onclick="addTask()">Add</button><br><br>
-        <button onclick="sortList()"id="sort">Sort A-Z</button>
-        <ul id="todoList"></ul>
+        <main>
+            <h1>To Do List</h1>
+            <div class="container">
+            <input type="text" id="todoInput">
+            <input type="date" id="dateInput">
+            <button onclick="addTask()">Add</button><br><br>
+            <button onclick="sortList()"id="sort">Sort A-Z</button>
+            <ul id="todoList"></ul>
+            </div>
+        </main>
     </body>
 	<script>
 		const todoList = [];
-
-        const tasksarray = JSON.parse(localStorage.getItem('tasksarray'));
 
         function addTask() {
         const input = document.getElementById("todoInput").value;
@@ -40,16 +42,21 @@
             const listItem = document.createElement("li");
             const deleteBtn = document.createElement("button");
             const editBtn = document.createElement("button");
+            const newCheckBox = document.createElement('input');
+            newCheckBox.type = 'checkbox';
 
             deleteBtn.textContent = "Delete";
             deleteBtn.className = "deleteBtn";
             editBtn.textContent = "Edit";
             editBtn.className = "editBtn";
+            newCheckBox.className = "checkbox";
             listItem.textContent = todoList[i];
+            listItem.id = i;
 
             deleteBtn.addEventListener("click", () => {
             todoList.splice(i, 1);
             displayList();
+            
             });
 
             editBtn.addEventListener("click", () => {
@@ -59,18 +66,25 @@
                 displayList();
             }
             });
-
+    
+            newCheckBox.addEventListener('click', () => {
+                if (listItem.style.textDecoration === 'line-through') {
+                listItem.style.textDecoration = 'none';
+                } else {
+                listItem.style.textDecoration = 'line-through';
+            }});
+        
             listItem.appendChild(editBtn);
             listItem.appendChild(deleteBtn);
+            listItem.appendChild(newCheckBox);
             list.appendChild(listItem);
+
         }
         }
 
             function sortList() {
             todoList.sort();
             displayList();
-
-            localStorage.setItem('tasksarray', JSON.stringify(todoList));
         }
 	</script>
 </html>
