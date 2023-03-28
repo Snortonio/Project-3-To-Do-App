@@ -11,76 +11,89 @@
         <main>
             <h1>To Do List</h1>
             <div class="container">
-            <input type="text" id="todoInput">
-            <input type="date" id="dateInput">
-            <button onclick="addTask()">Add</button><br><br>
-            <button onclick="sortList()"id="sort">Sort A-Z</button>
-            <ul id="todoList"></ul>
+                <input type="text" id="todoInput">
+                <input type="date" id="dateInput">
+                <button id="addtask">Add</button><br><br>
+                <button onclick="sortList()"id="sort">Sort A-Z</button>
+                <ul id="todoList"></ul>
             </div>
         </main>
     </body>
 	<script>
-		const todoList = [];
+        // Create an array called 'todoList' to store tasks //
+		const todoList = []; 
 
-        function addTask() {
-        const input = document.getElementById("todoInput").value;
+        // Obtain id's from html and assign variable //
+        const input = document.getElementById("todoInput");
         const date = document.getElementById("dateInput").value;
+        const addtaskBtn = document.getElementById("addtask");
 
-        if (input !== "") {
-            todoList.push(input +"  - Due Date: "+date);
-            displayList();
-            document.getElementById("todoInput").value = "";
-            document.getElementById("dateInput").value = "";
-        }
-        }
+        // When add button is clicked a task is created from user input and pushed to the array //
+        addtaskBtn.addEventListener('click', () =>{
+            const task = {
+                text: input.value, //text property created
+                completed: false  //completed property created
+            };
+        
+            todoList.push(task); //Push task to array
+            displayList(); // Render tasks
+            input.value = ""; //Reset input
+            date.value = ""; // Reset input
+        
+        });
 
+        //Render tasks iterates over the tasks array and creates new list item for each task//
         function displayList() {
         const list = document.getElementById("todoList");
-        list.innerHTML = "";
+        list.innerHTML = '';
 
         for (let i = 0; i < todoList.length; i++) {
-            const listItem = document.createElement("li");
-            const deleteBtn = document.createElement("button");
-            const editBtn = document.createElement("button");
+
+            const task = todoList[i];
+            
             const newCheckBox = document.createElement('input');
             newCheckBox.type = 'checkbox';
+            newCheckBox.checked = task.completed;
+            newCheckBox.addEventListener('click', () => {
+                task.completed = newCheckBox.checked;
+                displayList();
+            });
 
+            const tasktext = document.createElement('span');
+            tasktext.innerText = task.text;
+            if (task.completed){
+                tasktext.style.textDecoration = 'line-through';
+            }
+            const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "Delete";
             deleteBtn.className = "deleteBtn";
-            editBtn.textContent = "Edit";
-            editBtn.className = "editBtn";
-            newCheckBox.className = "checkbox";
-            listItem.textContent = todoList[i];
-            listItem.id = i;
-
             deleteBtn.addEventListener("click", () => {
             todoList.splice(i, 1);
             displayList();
             
             });
-
+            const editBtn = document.createElement("button");
+            editBtn.innerText = "Edit";
+            editBtn.className = "editBtn";
             editBtn.addEventListener("click", () => {
-            const newInput = prompt("Edit task:", todoList[i]);
-            if (newInput !== null && newInput !== "") {
-                todoList[i] = newInput;
+            const newInput = prompt("Edit task:", task.text);
+            if (newInput) {
+                task.text = newInput;
                 displayList();
             }
             });
     
-            newCheckBox.addEventListener('click', () => {
-                if (listItem.style.textDecoration === 'line-through') {
-                listItem.style.textDecoration = 'none';
-                } else {
-                listItem.style.textDecoration = 'line-through';
-            }});
-        
-            listItem.appendChild(editBtn);
-            listItem.appendChild(deleteBtn);
-            listItem.appendChild(newCheckBox);
-            list.appendChild(listItem);
+            const taskItem = document.createElement('li');
+            taskItem.appendChild(newCheckBox);
+            taskItem.appendChild(tasktext)
+            taskItem.appendChild(editBtn);
+            taskItem.appendChild(deleteBtn);
+            list.appendChild(taskItem);
 
-        }
-        }
+        };
+            
+
+        };
 
             function sortList() {
             todoList.sort();
