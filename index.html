@@ -4,60 +4,123 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <link rel="stylesheet" href="../Project-3-To-Do-App/stylesheet.css">
-        <script src="./main.js"></script>
         <title>To-Do List</title>
     </head>
     <body>
-        <h1>To-Do List</h1>
-        <input type="text" id="itemInput" placeholder="Enter task">
-        <input type="date" id="dueDateInput">
-        <button onclick="addItem()">Add Item</button>
-        <ul id="itemList">
-        </ul>
-        <script>
-            var input = document.getElementById("itemInput");
-            var dueDateInput = document.getElementById("dueDateInput");
-            var ul = document.getElementById("itemList");
-            var todolist = [];
-
-            function addItem() {
-                var item = input.value;
-                var dueDate = dueDateInput.value;
-                item.className = "item";
-                let editbn = document.createElement("button");
-                editbn.innerHTML = "Edit";
-                editbn.className = "editbn"
-                let savebn = document.createElement("Button");
-                savebn.innerHTML = "Save";
-                savebn.className = "savebn";
-                let deletebn = document.createElement("button");
-                deletebn.innerHTML = "Delete";
-                deletebn.className = "deletebn"
-                var li = document.createElement("li");
-                li.innerText = item + ":     Due Date:     "+ dueDate;
-                ul.appendChild(li);
-                ul.appendChild(editbn)
-                ul.appendChild(savebn)
-                ul.appendChild(deletebn)
-                
-                input.value = "";
-                dueDateInput.value = "";
-
-                editbn.addEventListener("click", function() {
-                li.contentEditable = true;
-                });
-
-                savebn.addEventListener("click", function(){
-                    li.contentEditable = false;
-                })
-
-                deletebn.addEventListener("click", function(){
-                ul.removeChild(li);
-                ul.removeChild(editbn);
-                ul.removeChild(savebn);
-                ul.removeChild(deletebn)});
-                }
-
-        </script>
+        <main>
+            <h1>To Do List</h1>
+            <div class="container">
+                <input type="text" id="todoInput">
+                <button id="addtask">Add</button><br><br>
+                <button onclick="sortList()"id="sort">Sort A-Z</button>
+                <ul id="todoList"></ul>
+            </div>
+        </main>
     </body>
+	<script>
+        // Obtain id's from html and assign variable //
+        const input = document.getElementById("todoInput");
+        const addtaskBtn = document.getElementById("addtask");
+
+         // Create an array called 'todoList' to store tasks //
+		let todoList = [];
+
+        //Load tasks from local storage - Retrieve JSON data, parse data and access array //
+        if (localStorage.getItem('todoList')){
+            todoList = JSON.parse(localStorage.getItem('todoList'));
+            displayList();
+        }
+
+        // When add button is clicked a task is created from user input and pushed to the array //
+        addtaskBtn.addEventListener('click', () =>{
+            const task = {
+                text: input.value, //text property created
+                completed: false  //completed property created
+            };
+        
+            todoList.push(task);//Push task to array
+            save(); //save to local storage//
+            displayList(); // Render tasks
+            input.value = ""; //Clear input
+        
+        });
+
+        //Renders the tasks iterates over the tasks array and creates new list item for each task//
+        function displayList() {
+        const list = document.getElementById("todoList");
+        list.innerHTML = ''; //Clear innerhtml of todo list
+        //For loop that iterates through each element in the array one by one until index equal to or greater than array length//
+        for (let i = 0; i < todoList.length; i++) { 
+
+            const task = todoList[i]; // new variable set to value of todoList[i] which holds reference to current task loop is processing//
+            
+            const newCheckBox = document.createElement('input');//create a new input with a variable name newCheckBox//
+            newCheckBox.type = 'checkbox'; // input type is set as a checkbox//
+            newCheckBox.checked = task.completed; //When check box is checked it is equal to task completed property//
+            newCheckBox.addEventListener('click', () => {
+                task.completed = newCheckBox.checked;
+                save(); // save to local storage//
+                displayList(); //render tasks//
+            });
+
+            const tasktext = document.createElement('span');//create a new span with a variable name of tasktext//
+            tasktext.innerText = task.text; // new span innertext equal to task text property//
+            if (task.completed){
+                tasktext.style.textDecoration = 'line-through'; // style text with a strikethrough on condition - if checkbox is checked//
+            }
+            const deleteBtn = document.createElement("button"); // create new button with variable name deleteBtn//
+            deleteBtn.textContent = "Delete"; // text within button is set to Delete//
+            deleteBtn.className = "deleteBtn"; // class assigned with name//
+            deleteBtn.addEventListener("click", () => { //if deletebutton is clicked by user then removes element from array//
+            todoList.splice(i, 1);
+            save();// save to local storage//
+            displayList(); // render tasks//
+            
+            });
+            const editBtn = document.createElement("button");// create new button with variable name editBtn//
+            editBtn.innerText = "Edit"; // text within button is set to Edit//
+            editBtn.className = "editBtn"; // class assigned with name//
+            editBtn.addEventListener("click", () => { //if edit button is clicked by user then prompt drop down allows task text to be edited//
+            const newInput = prompt("Edit task:", task.text); //variable assigned to updated text//
+            if (newInput) {
+                task.text = newInput; //task text for edited element now new input//
+                save(); //save to local storage//
+                displayList(); //render tasks//
+            }});
+
+            const dateInput = document.createElement('input'); // create new input element with varaible name//
+            dateInput.type = 'date'; // input type is set as a date input//
+            dateInput.className = "dateInput"; // class name assigned as dateInput//
+            dateInput.value = task.dueDate; // value of date input is equal to the task dueDate property//
+            dateInput.addEventListener('change', () => { // when user changes date the task due date property is set as seleceted value from date input//
+                task.dueDate = dateInput.value;
+                save(); // save to local storage//
+                displayList(); //render tasks//
+            });
+    
+            const dueDateText = document.createTextNode('Due date - '); // create new text node with specified text//
+            const taskItem = document.createElement('li'); // creates a list element with assigned variable name//
+            taskItem.appendChild(newCheckBox); // appends the checkbox to the list element
+            taskItem.appendChild(tasktext); // appends the task text to the list element
+            taskItem.appendChild(editBtn); // appends the edit button to the list element
+            taskItem.appendChild(deleteBtn); // appends the delete buitton to the list element//
+            taskItem.appendChild(dueDateText); // appends the due date txt node to the list element//
+            taskItem.appendChild(dateInput);// appends the date input to the list element
+            list.appendChild(taskItem); // appends the list element to the list //
+
+        };
+        };
+            //Save todolist array to local storage by converting to a string//
+            function save(){
+                localStorage.setItem('todoList', JSON.stringify(todoList));
+            }
+            //function that sorts the tasks within the array in alphabetical order//
+            function sortList() {
+                todoList.sort((a,b) => a.text.localeCompare(b.text));
+                save();
+                displayList();
+            }
+            
+       
+	</script>
 </html>

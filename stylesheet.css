@@ -3,8 +3,8 @@ body {
     margin: 0;
     padding: 0;
     text-align: center;
-    background-color: rgb(152, 83, 209);
-    font-size: 20px;
+    background-color: rgb(161, 139, 190);
+    font-size: 15px;
 }
 
 h1 {
@@ -14,7 +14,7 @@ h1 {
 }
 
 input[type="text"], input[type="date"], button {
-    font-size: 20px;
+    font-size: 15px;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -29,10 +29,10 @@ input[type="date"]{
     cursor: pointer;
 }
 input[type="checkbox"]{
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     position: absolute;
-    left: 50px;
+    left: 40px;
 }
 
 button {
@@ -48,12 +48,13 @@ ul {
 }
 
 li {
-    padding: 15px;
+    padding: 10px;
     margin-bottom: 10px;
     margin-right: 100px;
-    margin-left: 100px;
-    background-color: rgba(233, 196, 255, 0.897);
+    margin-left: 70px;
+    background-color: white;
     border-radius: 10px;
+    border: 8px solid rgba(233, 196, 255, 0.897)
 }
 
 .editBtn{
@@ -67,9 +68,16 @@ li {
     width: 75px;   
 }
 
-
-
 #sort{
     background-color: grey;
 }
 
+@media (max-width: 720px){
+    body{font-size: 85%;}
+    h1{font-size: 150%;}
+    li{margin-left: 20px; margin-right: 10px;}
+    input[type="checkbox"]{position: absolute; left: 5px;}
+    .deleteBtn,.editBtn{width: 50px;font-size: 70%;}
+    input[type="date"]{padding: 0px;font-size: 100%;}
+    input[type="text"]{width: 250px}
+}
